@@ -3,20 +3,20 @@ package com.jcsoftware.dscommerce.entities;
 import java.io.Serializable;
 import java.time.Instant;
 
-import jakarta.persistence.CascadeType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "orders")
-public class Order implements Serializable {
+@Table(name = "payments")
+public class Payment implements Serializable {
 
 	/**
 	 * 
@@ -26,29 +26,24 @@ public class Order implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant moment;
-
-	private Integer orderStatus;
 	
-	@ManyToOne
-	@JoinColumn(name="client_id")
-	private User client;
+	@JsonIgnore
+	@OneToOne
+	@MapsId
+	private Order order;
 	
-	@OneToOne(mappedBy="order",cascade=CascadeType.ALL)
-	private Payment payment;
-
-	public Order() {
-
+	public Payment() {
+		
 	}
 
-	public Order(Long id, Instant moment, Integer orderStatus, User client) {
+	public Payment(Long id, Instant moment, com.jcsoftware.dscommerce.entities.Order order) {
 		super();
 		this.id = id;
 		this.moment = moment;
-		this.orderStatus = orderStatus;
-		this.client = client;
+		this.order = order;
 	}
 
 	public Long getId() {
@@ -67,20 +62,12 @@ public class Order implements Serializable {
 		this.moment = moment;
 	}
 
-	public Integer getOrderStatus() {
-		return orderStatus;
+	public Order getOrder() {
+		return order;
 	}
 
-	public void setOrderStatus(Integer orderStatus) {
-		this.orderStatus = orderStatus;
-	}
-
-	public User getClient() {
-		return client;
-	}
-
-	public void setClient(User client) {
-		this.client = client;
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 	
 	
