@@ -3,7 +3,10 @@ package com.jcsoftware.dscommerce.entities;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import com.jcsoftware.dscommerce.entities.enums.OrderStatus;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -33,7 +36,8 @@ public class Order implements Serializable {
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant moment;
 
-	private Integer orderStatus;
+	private Integer status;
+	
 	
 	@ManyToOne
 	@JoinColumn(name="client_id")
@@ -49,11 +53,11 @@ public class Order implements Serializable {
 
 	}
 
-	public Order(Long id, Instant moment, Integer orderStatus, User client) {
+	public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
 		super();
 		this.id = id;
 		this.moment = moment;
-		this.orderStatus = orderStatus;
+		setOrderStatus(orderStatus);
 		this.client = client;
 	}
 
@@ -73,12 +77,15 @@ public class Order implements Serializable {
 		this.moment = moment;
 	}
 
-	public Integer getOrderStatus() {
-		return orderStatus;
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(status);
 	}
 
-	public void setOrderStatus(Integer orderStatus) {
-		this.orderStatus = orderStatus;
+	public void setOrderStatus(OrderStatus orderStatus) {
+		
+		if(orderStatus != null) {
+			this.status = orderStatus.getCode();			
+		}
 	}
 
 	public User getClient() {
@@ -102,6 +109,10 @@ public class Order implements Serializable {
 	public Set<OrderItem> getItems() {
 		return items;
 	}
+	
+	public List<Product> getProducts() {
+		return items.stream().map(x -> x.getProduct()).toList();
+		}
 
 	public Double getTotal() {
 		
