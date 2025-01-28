@@ -2,24 +2,34 @@ package com.jcsoftware.dscommerce.dtos;
 
 import com.jcsoftware.dscommerce.entities.Product;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class ProductDTO {
-	
+
 	private Long id;
+
+	@NotBlank(message = "Campo requerido")
+	@Size(min = 3, max = 80, message = "O campo deve ter mais de 3 e menos de 80 caracteres")
 	private String name;
+	@Size(min = 10, message = "A descrição deve ter mais do que 10 caracteres.")
 	private String description;
+	@Positive(message = "O preço deve ser maior do que zero.")
 	private Double price;
 	private String imgUrl;
-	
+
 	public ProductDTO() {
-		
+
 	}
-	
+
 	public ProductDTO(Product entity) {
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.description = entity.getDescription();
 		this.price = entity.getPrice();
-		this.imgUrl = entity.getImgUrl();	}
+		this.imgUrl = entity.getImgUrl();
+	}
 
 	public Long getId() {
 		return id;
@@ -60,10 +70,5 @@ public class ProductDTO {
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
-	
-	
-	
-	
 
-	
 }

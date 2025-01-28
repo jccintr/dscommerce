@@ -22,6 +22,8 @@ import com.jcsoftware.dscommerce.dtos.ProductDTO;
 import com.jcsoftware.dscommerce.entities.Product;
 import com.jcsoftware.dscommerce.services.ProductService;
 
+import jakarta.validation.Valid;
+
 
 
 @RestController
@@ -44,7 +46,7 @@ public class ProductController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto){
+	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto){
 		ProductDTO newProductDTO = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(newProductDTO.getId()).toUri();
@@ -53,7 +55,7 @@ public class ProductController {
 	}
 	
 	@PutMapping(value="/{id}")
-	public ResponseEntity<ProductDTO> update(@PathVariable Long id,@RequestBody ProductDTO dto){
+	public ResponseEntity<ProductDTO> update(@PathVariable Long id,@Valid @RequestBody ProductDTO dto){
 		
 		var  product = service.update(id, dto);
 		return ResponseEntity.ok().body(product);
