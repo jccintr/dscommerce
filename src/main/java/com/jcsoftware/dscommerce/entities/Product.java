@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -98,15 +100,15 @@ public class Product implements Serializable {
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
-
+    @JsonIgnore
 	public Set<Category> getCategories() {
 		return categories;
 	}
-
+    @JsonIgnore
 	public Set<OrderItem> getItems() {
 		return items;
 	}
-
+    @JsonIgnore
 	public List<Order> getOrders() {
 		return items.stream().map(x -> x.getOrder()).toList();
 	}
