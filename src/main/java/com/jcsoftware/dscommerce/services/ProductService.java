@@ -14,6 +14,7 @@ import com.jcsoftware.dscommerce.dtos.ProductDTO;
 import com.jcsoftware.dscommerce.entities.Product;
 import com.jcsoftware.dscommerce.repositories.ProductRepository;
 
+
 @Service
 public class ProductService {
 
@@ -50,9 +51,32 @@ public class ProductService {
 		BeanUtils.copyProperties(dto, newProduct);
 		newProduct = repository.save(newProduct);
 		
-		//ProductDTO newProductDTO = new ProductDTO();
-	//	BeanUtils.copyProperties(productCreated, newProductDTO);
 		return new ProductDTO(newProduct);
 	}
+	 @Transactional
+	 public ProductDTO update(Long id,ProductDTO dto) {
+		 
+		    
+		  //  try {	
+		     Product product = repository.getReferenceById(id);
+		     updateData(dto,product);
+		     product = repository.save(product);
+		     
+		     return new ProductDTO(product);
+		  //  } 
+		  //  catch (EntityNotFoundException e) {
+		   // 	e.printStackTrace();
+		    	//throw(new ResourceNotFoundException(id));
+		  //  }
+	    
+	    }
+	 
+	 private void updateData(ProductDTO source,Product target) {
+		 
+		 target.setName(source.getName());
+		 target.setDescription(source.getDescription());
+		 target.setPrice(source.getPrice());
+		 target.setImgUrl(source.getImgUrl());
+	 }
 
 }
