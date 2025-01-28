@@ -3,16 +3,21 @@ package com.jcsoftware.dscommerce.services;
 
 import java.util.Optional;
 
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.jcsoftware.dscommerce.dtos.ProductDTO;
 import com.jcsoftware.dscommerce.entities.Product;
 import com.jcsoftware.dscommerce.repositories.ProductRepository;
+import com.jcsoftware.dscommerce.services.exceptions.IntegrityViolationException;
+import com.jcsoftware.dscommerce.services.exceptions.ResourceNotFoundException;
+
+import jakarta.persistence.EntityNotFoundException;
 
 
 @Service
@@ -37,7 +42,7 @@ public class ProductService {
 	public ProductDTO findById(Long id) {
 
 		Optional<Product> productO = repository.findById(id);
-		Product product = productO.get();
+		Product product = productO.orElseThrow(()->new ResourceNotFoundException(id));
 		ProductDTO dto = new ProductDTO();
 		BeanUtils.copyProperties(product, dto);
 		return dto;
@@ -57,24 +62,32 @@ public class ProductService {
 	 public ProductDTO update(Long id,ProductDTO dto) {
 		 
 		    
-		  //  try {	
-		     Product product = repository.getReferenceById(id);
-		     
-		     updateData(dto,product);
-		     product = repository.save(product);
-		     
-		     return new ProductDTO(product);
-		  //  } 
-		  //  catch (EntityNotFoundException e) {
-		   // 	e.printStackTrace();
-		    	//throw(new ResourceNotFoundException(id));
-		  //  }
+		    try {	
+		      Product product = repository.getReferenceById(id);
+		      updateData(dto,product);
+		      product = repository.save(product);
+		      return new ProductDTO(product);
+		    } 
+		    catch (EntityNotFoundException e) {
+		    	throw(new ResourceNotFoundException(id));
+		    }
 	    
 	    }
 	 
 	 public void delete(Long id) {
 		 
-		 repository.deleteById(id);
+		 try {
+			 
+			 if(repository.existsById(id)) {
+	    			repository.deleteById(id);	
+	    		} else {
+	    			throw(new ResourceNotFoundException(id));
+	    		}
+		 }
+		 
+		 catch(DataIntegrityViolationException e) {
+	    		throw(new IntegrityViolationException(id));
+	    	}
 	 
 	 }
 	 
