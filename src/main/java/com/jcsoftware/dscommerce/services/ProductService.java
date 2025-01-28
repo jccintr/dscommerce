@@ -59,6 +59,7 @@ public class ProductService {
 		    
 		  //  try {	
 		     Product product = repository.getReferenceById(id);
+		     
 		     updateData(dto,product);
 		     product = repository.save(product);
 		     
@@ -70,6 +71,12 @@ public class ProductService {
 		  //  }
 	    
 	    }
+	 
+	 public void delete(Long id) {
+		 
+		 repository.deleteById(id);
+	 
+	 }
 	 
 	 private void updateData(ProductDTO source,Product target) {
 		 
