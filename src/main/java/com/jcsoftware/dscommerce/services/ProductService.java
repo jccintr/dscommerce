@@ -1,6 +1,5 @@
 package com.jcsoftware.dscommerce.services;
 
-
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
@@ -19,84 +18,79 @@ import com.jcsoftware.dscommerce.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 
-
 @Service
 public class ProductService {
 
 	@Autowired
 	private ProductRepository repository;
 
-	public Page<ProductDTO> findAll(Pageable pageable) {
+	public Page<ProductDTO> findAll(String name,Pageable pageable) {
 
-		Page<Product> products = repository.findAll(pageable);
-		// List<ProductDTO> dtos = new ArrayList<>();
+		Page<Product> products = repository.searchByName(name,pageable);
+		
 		return products.map(x -> new ProductDTO(x));
 
-		/*
-		 * for(Product p: products) { ProductDTO dto = new ProductDTO();
-		 * BeanUtils.copyProperties(p, dto); dtos.add(dto); } return dtos;
-		 */
+		
 	}
 
 	@Transactional(readOnly = true)
 	public ProductDTO findById(Long id) {
 
 		Optional<Product> productO = repository.findById(id);
-		Product product = productO.orElseThrow(()->new ResourceNotFoundException(id));
+		Product product = productO.orElseThrow(() -> new ResourceNotFoundException(id));
 		ProductDTO dto = new ProductDTO();
 		BeanUtils.copyProperties(product, dto);
 		return dto;
 
 	}
-	
+
 	@Transactional
 	public ProductDTO insert(ProductDTO dto) {
 
 		Product newProduct = new Product();
 		BeanUtils.copyProperties(dto, newProduct);
 		newProduct = repository.save(newProduct);
-		
+
 		return new ProductDTO(newProduct);
 	}
-	 @Transactional
-	 public ProductDTO update(Long id,ProductDTO dto) {
-		 
-		    
-		    try {	
-		      Product product = repository.getReferenceById(id);
-		      updateData(dto,product);
-		      product = repository.save(product);
-		      return new ProductDTO(product);
-		    } 
-		    catch (EntityNotFoundException e) {
-		    	throw(new ResourceNotFoundException(id));
-		    }
-	    
-	    }
-	 
-	 public void delete(Long id) {
-		 
-		 try {
-			 
-			 if(repository.existsById(id)) {
-	    			repository.deleteById(id);	
-	    		} else {
-	    			throw(new ResourceNotFoundException(id));
-	    		}
-		 }
-		 
-		 catch(DataIntegrityViolationException e) {
-	    		throw(new IntegrityViolationException(id));
-	    	}
-	 
-	 }
-	 
-	 private void updateData(ProductDTO source,Product target) {
-		 
-		 target.setName(source.getName());
-		 target.setDescription(source.getDescription());
-		 target.setPrice(source.getPrice());
-		 target.setImgUrl(source.getImgUrl());
-	 }
+
+	@Transactional
+	public ProductDTO update(Long id, ProductDTO dto) {
+
+		try {
+			Product product = repository.getReferenceById(id);
+			updateData(dto, product);
+			product = repository.save(product);
+			return new ProductDTO(product);
+		} catch (EntityNotFoundException e) {
+			throw (new ResourceNotFoundException(id));
+		}
+
+	}
+
+	public void delete(Long id) {
+
+		try {
+
+			if (repository.existsById(id)) {
+				repository.deleteById(id);
+			} else {
+				throw (new ResourceNotFoundException(id));
+			}
+		}
+
+		catch (DataIntegrityViolationException e) {
+			throw (new IntegrityViolationException(id));
+		}
+
+	}
+
+	private void updateData(ProductDTO source, Product target) {
+
+		target.setName(source.getName());
+		target.setDescription(source.getDescription());
+		target.setPrice(source.getPrice());
+		target.setImgUrl(source.getImgUrl());
+	}
 
 }

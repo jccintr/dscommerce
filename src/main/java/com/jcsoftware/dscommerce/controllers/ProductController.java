@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -34,8 +35,8 @@ public class ProductController {
 	private ProductService service;
 
 	@GetMapping
-	public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable){
-        Page<ProductDTO> products = service.findAll(pageable);
+	public ResponseEntity<Page<ProductDTO>> findAll(@RequestParam(defaultValue="") String name,Pageable pageable){
+        Page<ProductDTO> products = service.findAll(name,pageable);
         return ResponseEntity.ok().body(products);
 	}
 	
@@ -47,10 +48,11 @@ public class ProductController {
 	
 	@PostMapping
 	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto){
+		
 		ProductDTO newProductDTO = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(newProductDTO.getId()).toUri();
-		//return ResponseEntity.status(HttpStatus.CREATED).body(newProductDTO);
+		
 		return ResponseEntity.created(uri).body(newProductDTO);
 	}
 	
