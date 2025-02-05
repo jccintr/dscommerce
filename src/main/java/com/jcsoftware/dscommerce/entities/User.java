@@ -133,6 +133,15 @@ public class User implements Serializable,UserDetails {
 
 		return false;
 	}
+	
+	public List<String> getRoles(){
+		
+		List<String> userRoles = new ArrayList<>();
+		for (Role role : roles) {
+             userRoles.add(role.getAuthority().toString());
+		}
+		return userRoles;
+	}
 
 	@Override
 	public int hashCode() {
@@ -160,6 +169,30 @@ public class User implements Serializable,UserDetails {
 	@Override
 	public String getUsername() {
 		return email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 	
