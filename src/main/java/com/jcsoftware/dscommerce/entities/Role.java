@@ -3,6 +3,8 @@ package com.jcsoftware.dscommerce.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,7 +14,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "roles")
-public class Role implements Serializable{
+public class Role implements Serializable, GrantedAuthority{
 	
 	/**
 	 * 
@@ -42,6 +44,7 @@ public class Role implements Serializable{
 		this.id = id;
 	}
 
+	@Override
 	public String getAuthority() {
 		return authority;
 	}
