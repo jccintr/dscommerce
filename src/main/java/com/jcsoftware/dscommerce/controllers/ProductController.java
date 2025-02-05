@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jcsoftware.dscommerce.dtos.ProductDTO;
+import com.jcsoftware.dscommerce.dtos.ProductMinDTO;
 import com.jcsoftware.dscommerce.entities.Product;
 import com.jcsoftware.dscommerce.services.ProductService;
 
@@ -36,8 +37,8 @@ public class ProductController {
 	private ProductService service;
 
 	@GetMapping
-	public ResponseEntity<Page<ProductDTO>> findAll(@RequestParam(defaultValue="") String name,Pageable pageable){
-        Page<ProductDTO> products = service.findAll(name,pageable);
+	public ResponseEntity<Page<ProductMinDTO>> findAll(@RequestParam(defaultValue="") String name,Pageable pageable){
+        Page<ProductMinDTO> products = service.findAll(name,pageable);
         return ResponseEntity.ok().body(products);
 	}
 	

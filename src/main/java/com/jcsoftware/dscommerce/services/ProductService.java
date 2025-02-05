@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jcsoftware.dscommerce.dtos.ProductDTO;
+import com.jcsoftware.dscommerce.dtos.ProductMinDTO;
 import com.jcsoftware.dscommerce.entities.Product;
 import com.jcsoftware.dscommerce.repositories.ProductRepository;
 import com.jcsoftware.dscommerce.services.exceptions.IntegrityViolationException;
@@ -24,11 +25,11 @@ public class ProductService {
 	@Autowired
 	private ProductRepository repository;
 
-	public Page<ProductDTO> findAll(String name,Pageable pageable) {
+	public Page<ProductMinDTO> findAll(String name,Pageable pageable) {
 
 		Page<Product> products = repository.searchByName(name,pageable);
 		
-		return products.map(x -> new ProductDTO(x));
+		return products.map(x -> new ProductMinDTO(x));
 
 		
 	}
