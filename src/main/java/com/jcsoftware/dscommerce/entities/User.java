@@ -3,8 +3,10 @@ package com.jcsoftware.dscommerce.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -13,6 +15,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -28,11 +33,15 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	 @Column(unique=true)
+	@Column(unique = true)
 	private String email;
 	private String phone;
 	private LocalDate birthDate;
 	private String password;
+
+	@ManyToMany
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "client")
@@ -104,6 +113,23 @@ public class User implements Serializable {
 		return orders;
 	}
 
+	public void addRole(Role role) {
+		roles.add(role);
+	}
+
+	public boolean hasRole(String roleName) {
+
+		for (Role role : roles) {
+
+			if (role.getAuthority().equals(roleName)) {
+				return true;
+			}
+
+		}
+
+		return false;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -120,7 +146,5 @@ public class User implements Serializable {
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
 
 }
