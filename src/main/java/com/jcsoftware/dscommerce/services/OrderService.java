@@ -22,11 +22,12 @@ import com.jcsoftware.dscommerce.services.exceptions.ResourceNotFoundException;
 public class OrderService {
 	
 	@Autowired
-	private OrderRepository repository;
+	private OrderRepository orderRepository;
 	@Autowired
 	private OrderItemRepository orderItemRepository;
 	@Autowired
 	private ProductRepository productRepository;
+	
 	@Autowired
 	private UserService userService;
 
@@ -34,7 +35,7 @@ public class OrderService {
 	@Transactional(readOnly = true)
 	public OrderDTO findById(Long id) {
 
-		Optional<Order> orderO = repository.findById(id);
+		Optional<Order> orderO = orderRepository.findById(id);
 		Order order = orderO.orElseThrow(() -> new ResourceNotFoundException(id));
 		OrderDTO dto = new OrderDTO(order);
 		
@@ -53,7 +54,7 @@ public class OrderService {
 			OrderItem item = new OrderItem(order,product,itemDTO.getQuantity(),product.getPrice());
 			order.getItems().add(item);
 		}
-		repository.save(order);
+		orderRepository.save(order);
 		orderItemRepository.saveAll(order.getItems());
 		return new OrderDTO(order);
 	}

@@ -77,9 +77,9 @@ INSERT INTO orders (moment, status, client_id) VALUES (TIMESTAMP WITH TIME ZONE 
 INSERT INTO orders (moment, status, client_id) VALUES (TIMESTAMP WITH TIME ZONE '2022-08-03T14:20:00Z', 1, 1);
 
 INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (1, 1, 2, 90.5);
-INSERT INTO order_items(order_id, product_id, quantity, price) VALUES (1, 3, 1, 1250.0);
-INSERT INTO order_items(order_id, product_id, quantity, price) VALUES (2, 3, 1, 1250.0);
-INSERT INTO order_items(order_id, product_id, quantity, price) VALUES (3, 1, 1, 90.5);
+INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (1, 3, 1, 1250.0);
+INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (2, 3, 1, 1250.0);
+INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (3, 1, 1, 90.5);
 
 INSERT INTO payments (order_id, moment) VALUES (1, TIMESTAMP WITH TIME ZONE '2022-07-25T15:00:00Z');
 INSERT INTO payments (order_id, moment) VALUES (2, TIMESTAMP WITH TIME ZONE '2022-07-30T11:00:00Z');
