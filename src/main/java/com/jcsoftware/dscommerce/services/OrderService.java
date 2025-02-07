@@ -27,9 +27,11 @@ public class OrderService {
 	private OrderItemRepository orderItemRepository;
 	@Autowired
 	private ProductRepository productRepository;
-	
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private AuthService authService;
+	
 
 	
 	@Transactional(readOnly = true)
@@ -37,13 +39,14 @@ public class OrderService {
 
 		Optional<Order> orderO = orderRepository.findById(id);
 		Order order = orderO.orElseThrow(() -> new ResourceNotFoundException(id));
+		authService.validateSelfOrAdmin(order.getClient().getId(),order.getId());
 		OrderDTO dto = new OrderDTO(order);
 		
 		return dto;
 
 	}
 
-	@Transactional(readOnly = true)
+	@Transactional
 	public OrderDTO insert(OrderDTO dto) {
 		Order order = new Order();
 		order.setMoment(Instant.now());

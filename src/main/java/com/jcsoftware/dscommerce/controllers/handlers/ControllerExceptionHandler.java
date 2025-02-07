@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.jcsoftware.dscommerce.controllers.exceptions.StandardError;
 import com.jcsoftware.dscommerce.controllers.exceptions.ValidationError;
+import com.jcsoftware.dscommerce.services.exceptions.ForbiddenException;
 import com.jcsoftware.dscommerce.services.exceptions.IntegrityViolationException;
 import com.jcsoftware.dscommerce.services.exceptions.ResourceNotFoundException;
 
@@ -47,6 +48,16 @@ public class ControllerExceptionHandler {
 		for(FieldError f : e.getBindingResult().getFieldErrors()) {
 			err.AddError(f.getField(), f.getDefaultMessage());
 		}
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	@ExceptionHandler(ForbiddenException.class)
+	public ResponseEntity<StandardError> forbiden(ForbiddenException e, HttpServletRequest request) {
+
+		String error = "Access denied";
+		HttpStatus status = HttpStatus.FORBIDDEN;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(),
+				request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
 	

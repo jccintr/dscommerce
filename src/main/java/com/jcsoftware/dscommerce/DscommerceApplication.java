@@ -1,25 +1,13 @@
 package com.jcsoftware.dscommerce;
 
-import java.time.Instant;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.jcsoftware.dscommerce.entities.Order;
-import com.jcsoftware.dscommerce.entities.OrderItem;
-import com.jcsoftware.dscommerce.entities.Product;
-import com.jcsoftware.dscommerce.entities.User;
-import com.jcsoftware.dscommerce.entities.enums.OrderStatus;
-import com.jcsoftware.dscommerce.repositories.OrderItemRepository;
-import com.jcsoftware.dscommerce.repositories.OrderRepository;
-import com.jcsoftware.dscommerce.repositories.ProductRepository;
-import com.jcsoftware.dscommerce.repositories.UserRepository;
-
 @SpringBootApplication
-public class DscommerceApplication implements CommandLineRunner  {
-
+//public class DscommerceApplication implements CommandLineRunner  {
+	public class DscommerceApplication {
+	
+	/*
 	@Autowired
 	UserRepository userRepository;
 	
@@ -31,11 +19,11 @@ public class DscommerceApplication implements CommandLineRunner  {
 	
 	@Autowired
 	OrderItemRepository orderItemRepository;
-	
+	*/
 	public static void main(String[] args) {
 		SpringApplication.run(DscommerceApplication.class, args);
 	}
-
+/*
 	@Override
 	public void run(String... args) throws Exception {
 		
@@ -52,6 +40,6 @@ public class DscommerceApplication implements CommandLineRunner  {
 		orderItemRepository.saveAll(order.getItems());
 		
 	}
-
+*/
 	
 }
