@@ -26,7 +26,7 @@ public class ValidationError extends StandardError {
 	}
 	
 	public void AddError(String fieldName,String message) {
-		
+		errors.removeIf(x -> x.getFieldName().equals(fieldName));
 		errors.add(new FieldMessage(fieldName,message));		
 	}
 	
