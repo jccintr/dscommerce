@@ -16,7 +16,7 @@ public class UserRegisterDTO{
 	@Size(min = 3, message = "O campo deve ter pelo menos 3 caracteres")
 	private String name;
 	@NotBlank(message = "Campo requerido")
-	@Email(message="Email inválido",regexp = "/^[a-z0-9.]+@[a-z0-9]+\\.[a-z]+\\.([a-z]+)?$/i")
+	@Email(message="Email inválido",regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
 	private String email;
 	private String phone;
 	@Past(message="Data de nascimento deve ser inferior a data atual")
