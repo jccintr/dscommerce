@@ -95,6 +95,41 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.11</version>
+				<configuration>
+					<excludes>
+						<exclude>com/jcsoftware/dscommerce/DscommerceApplication.class</exclude>
+						<exclude>com/jcsoftware/dscommerce/config/**</exclude>
+						<exclude>com/jcsoftware/dscommerce/entities/**</exclude>
+						<exclude>com/jcsoftware/dscommerce/dtos/**</exclude>
+						<exclude>com/jcsoftware/dscommerce/util/**</exclude>
+						<exclude>com/jcsoftware/dscommerce/controllers/**</exclude>
+						<exclude>com/jcsoftware/dscommerce/controllers/handlers/**</exclude>
+						<exclude>com/jcsoftware/dscommerce/controllers/exceptions/**</exclude>
+						<exclude>com/jcsoftware/dscommerce/services/exceptions/**</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/jacoco-report</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 

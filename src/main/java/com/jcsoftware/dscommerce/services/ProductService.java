@@ -101,14 +101,6 @@ public class ProductService {
 			entity.getCategories().add(cat);
 		}
 	}
-/*
-	private void updateData(ProductDTO source, Product target) {
 
-		target.setName(source.getName());
-		target.setDescription(source.getDescription());
-		target.setPrice(source.getPrice());
-		target.setImgUrl(source.getImgUrl());
-	}
-	*/
 
 }
